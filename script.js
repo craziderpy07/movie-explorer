@@ -18,7 +18,13 @@ async function fetchMovies(page = 1) {
         const response = await fetch(url);
         const data = await response.json();
         movies = data.results.slice(0, 20);
-        totalPages = searchQuery ? Math.ceil(data.total_results / 20) : data.total_pages;
+        
+        if (searchQuery) {
+            totalPages = Math.ceil(data.total_results / 20);
+        } else if (totalPages === 1) {
+            totalPages = data.total_pages;
+        }
+        
         displayMovies();
         updatePageNumber();
     } catch (error) {
@@ -27,7 +33,7 @@ async function fetchMovies(page = 1) {
 }
 
 function displayMovies() {
-    let filteredMovies = movies;
+    let filteredMovies = [...movies];
 
     if (sortBy) {
         filteredMovies.sort((a, b) => {
@@ -65,20 +71,18 @@ function searchMovies() {
 
 function sortMovies() {
     sortBy = document.getElementById('sort').value;
-    displayMovies();
+    if (!sortBy) {
+        fetchMovies(currentPage);
+    } else {
+        displayMovies();
+    }
 }
 
 function changePage(step) {
-    if (searchQuery) {
-        currentPage += step;
-        if (currentPage < 1) currentPage = 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-        fetchMovies(currentPage);
-    } else {
-        currentPage += step;
-        if (currentPage < 1) currentPage = 1;
-        fetchMovies(currentPage);
-    }
+    currentPage += step;
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    fetchMovies(currentPage);
 }
 
 function updatePageNumber() {

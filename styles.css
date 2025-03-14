@@ -1,3 +1,4 @@
+/* */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -28,6 +29,7 @@ header {
 
 h1 {
     color: white;
+    margin-top: 5px;
 }
 
 input, select {
