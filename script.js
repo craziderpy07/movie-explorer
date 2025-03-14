@@ -4,15 +4,23 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 let movies = [];
 let currentPage = 1;
+let totalPages = 1;
 let searchQuery = '';
 let sortBy = '';
 
 async function fetchMovies(page = 1) {
     try {
-        const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`);
+        let url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`;
+        if (searchQuery) {
+            url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(searchQuery)}&page=${page}`;
+        }
+        
+        const response = await fetch(url);
         const data = await response.json();
-        movies = data.results.slice(0, 20);
+        movies = data.results.slice(0, 20); // Ensure only 20 movies per page
+        totalPages = searchQuery ? Math.ceil(data.total_results / 20) : data.total_pages;
         displayMovies();
+        updatePageNumber();
     } catch (error) {
         console.error("Error fetching movies:", error);
     }
@@ -20,12 +28,6 @@ async function fetchMovies(page = 1) {
 
 function displayMovies() {
     let filteredMovies = movies;
-
-    if (searchQuery) {
-        filteredMovies = filteredMovies.filter(movie =>
-            movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-    }
 
     if (sortBy) {
         filteredMovies.sort((a, b) => {
@@ -38,6 +40,7 @@ function displayMovies() {
 
     const movieContainer = document.getElementById('movies');
     movieContainer.innerHTML = '';
+    movieContainer.style.display = 'grid'; // Ensure grid layout persists during search
 
     filteredMovies.forEach(movie => {
         const movieElement = document.createElement('div');
@@ -50,11 +53,14 @@ function displayMovies() {
         `;
         movieContainer.appendChild(movieElement);
     });
+    
+    movieContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
 }
 
 function searchMovies() {
     searchQuery = document.getElementById('search').value;
-    displayMovies();
+    currentPage = 1;
+    fetchMovies(currentPage);
 }
 
 function sortMovies() {
@@ -63,10 +69,20 @@ function sortMovies() {
 }
 
 function changePage(step) {
-    currentPage += step;
-    if (currentPage < 1) currentPage = 1;
-    document.getElementById('pageNumber').textContent = `Page ${currentPage}`;
-    fetchMovies(currentPage);
+    if (searchQuery) {
+        currentPage += step;
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+        fetchMovies(currentPage);
+    } else {
+        currentPage += step;
+        if (currentPage < 1) currentPage = 1;
+        fetchMovies(currentPage);
+    }
+}
+
+function updatePageNumber() {
+    document.getElementById('pageNumber').textContent = `Page ${currentPage} of ${totalPages}`;
 }
 
 fetchMovies(currentPage);

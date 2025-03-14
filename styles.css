@@ -68,11 +68,11 @@ button {
     font-size: 16px;
     border: none;
     cursor: pointer;
-    background-color: #e50914;
+    background-color: #3197d8;
     color: white;
     border-radius: 5px;
 }
 
 button:hover {
-    background-color: #b20710;
+    background-color: #277fb8;
 }
