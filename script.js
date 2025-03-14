@@ -17,7 +17,7 @@ async function fetchMovies(page = 1) {
         
         const response = await fetch(url);
         const data = await response.json();
-        movies = data.results.slice(0, 20); // Ensure only 20 movies per page
+        movies = data.results.slice(0, 20);
         totalPages = searchQuery ? Math.ceil(data.total_results / 20) : data.total_pages;
         displayMovies();
         updatePageNumber();
@@ -40,7 +40,7 @@ function displayMovies() {
 
     const movieContainer = document.getElementById('movies');
     movieContainer.innerHTML = '';
-    movieContainer.style.display = 'grid'; // Ensure grid layout persists during search
+    movieContainer.style.display = 'grid';
 
     filteredMovies.forEach(movie => {
         const movieElement = document.createElement('div');
