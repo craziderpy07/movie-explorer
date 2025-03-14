@@ -1,4 +1,4 @@
-const API_KEY = '06d428727d36517520fc86c0efa21424'; // Replace with your TMDB API key
+const API_KEY = '06d428727d36517520fc86c0efa21424';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -11,7 +11,7 @@ async function fetchMovies(page = 1) {
     try {
         const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`);
         const data = await response.json();
-        movies = data.results.slice(0, 20); // Ensure 20 movies per page
+        movies = data.results.slice(0, 20);
         displayMovies();
     } catch (error) {
         console.error("Error fetching movies:", error);
@@ -69,5 +69,4 @@ function changePage(step) {
     fetchMovies(currentPage);
 }
 
-// Initial Fetch
 fetchMovies(currentPage);

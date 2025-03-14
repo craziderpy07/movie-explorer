@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Listing</title>
+    <title>Movie Explorer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
-        <input type="text" id="search" placeholder="Search movies..." oninput="searchMovies()">
-        <select id="sort" onchange="sortMovies()">
-            <option value="release_asc">Release Date (Asc)</option>
-            <option value="release_desc">Release Date (Desc)</option>
-            <option value="rating_asc">Rating (Asc)</option>
-            <option value="rating_desc">Rating (Desc)</option>
-        </select>
+        <h1>Movie Explorer</h1>
+        <div id="search-bar-container">
+            <input type="text" id="search" placeholder="Search for a movie..." oninput="searchMovies()">
+            <select id="sort" onchange="sortMovies()">
+                <Option value="">Sort by</Option>
+                <option value="release_asc">Release Date (Asc)</option>
+                <option value="release_desc">Release Date (Desc)</option>
+                <option value="rating_asc">Rating (Asc)</option>
+                <option value="rating_desc">Rating (Desc)</option>
+            </select>
+        </div>
     </header>
     
     <div id="movies"></div>
