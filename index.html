@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Listing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <input type="text" id="search" placeholder="Search movies..." oninput="searchMovies()">
+        <select id="sort" onchange="sortMovies()">
+            <option value="release_asc">Release Date (Asc)</option>
+            <option value="release_desc">Release Date (Desc)</option>
+            <option value="rating_asc">Rating (Asc)</option>
+            <option value="rating_desc">Rating (Desc)</option>
+        </select>
+    </header>
+    
+    <div id="movies"></div>
+    
+    <div id="pagination">
+        <button id="prevPage" onclick="changePage(-1)">Previous</button>
+        <span id="pageNumber">Page 1</span>
+        <button id="nextPage" onclick="changePage(1)">Next</button>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
